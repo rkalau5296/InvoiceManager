@@ -14,6 +14,7 @@ namespace InvoiceManager.Models.Domains
         public decimal Value { get; set; }
         public int Quantity { get; set; }
         public Invoice Invoice { get; set; }
-        public Product Product { get; set; }
+        public Product Product { get; set; }        
+        public int ProductId { get; set; }
     }
 }
