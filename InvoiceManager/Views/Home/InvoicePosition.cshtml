@@ -16,14 +16,17 @@
         <div class="form-group">
             @Html.LabelFor(x => x.InvoicePosition.Lp)
             @Html.TextBoxFor(x => x.InvoicePosition.Lp, new { @class = "form-control", autofocus = "autofocus" })
+            @Html.ValidationMessageFor(x => x.InvoicePosition.Lp)
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.InvoicePosition.ProductId)
             @Html.DropDownListFor(x => x.InvoicePosition.ProductId, new SelectList(Model.Products, "Id", "Name"), "--Wybierz produkt--", new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.InvoicePosition.ProductId)
         </div>
         <div class="form-group">
             @Html.LabelFor(x => x.InvoicePosition.Quantity)
             @Html.TextBoxFor(x => x.InvoicePosition.Quantity, new { @class = "form-control" })
+            @Html.ValidationMessageFor(x => x.InvoicePosition.Quantity)
         </div>
         if (Model.InvoicePosition.Id != 0)
         {

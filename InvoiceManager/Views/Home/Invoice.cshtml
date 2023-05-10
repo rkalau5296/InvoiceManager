@@ -25,11 +25,13 @@
             <div class="form-group">
                 @Html.LabelFor(x => x.Invoice.Title)
                 @Html.TextBoxFor(x => x.Invoice.Title, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.Invoice.Title)
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(x => x.Invoice.ClientId)
                 @Html.DropDownListFor(x => x.Invoice.ClientId, new SelectList(Model.Clients, "Id", "Name"), "--Wybierz klienta--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Invoice.ClientId)
             </div>
 
             if (Model.Invoice.Id != 0)
@@ -42,15 +44,18 @@
             <div class="form-group">
                 @Html.LabelFor(x => x.Invoice.MethodOfPaymentId)
                 @Html.DropDownListFor(x => x.Invoice.MethodOfPaymentId, new SelectList(Model.MethodOfPayments, "Id", "Name"), "--Wybierz metodę płatności--", new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Invoice.MethodOfPaymentId)
             </div>
 
             <div class="form-group">
                 @Html.LabelFor(x => x.Invoice.PaymentDate)
                 @Html.TextBoxFor(x => x.Invoice.PaymentDate, "{0:dd-MM-yyyy}", new { @class = "form-control", @id = "PaymentDate", autocomplete = "off" })
+                @Html.ValidationMessageFor(x => x.Invoice.PaymentDate)
             </div>
             <div class="form-group">
                 @Html.LabelFor(x => x.Invoice.Comments)
                 @Html.TextAreaFor(x => x.Invoice.Comments, new { @class = "form-control" })
+                @Html.ValidationMessageFor(x => x.Invoice.Comments)
             </div>
             <button class="btn btn-primary btn-lg mb-5" type="submit">Zapisz</button>
 

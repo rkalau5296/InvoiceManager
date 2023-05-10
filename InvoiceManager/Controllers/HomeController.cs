@@ -82,6 +82,13 @@ namespace InvoiceManager.Controllers
         {
             var userId = User.Identity.GetUserId();
             invoice.UserId = userId;
+
+            if (!ModelState.IsValid)
+            {
+                var vm = PrepareInvoiceVm(invoice, userId);
+                return View("Invoice", vm);
+            }
+
             if(invoice.Id == 0) 
             {
                 _invoiceRepository.Add(invoice);
@@ -99,6 +106,12 @@ namespace InvoiceManager.Controllers
             var userId = User.Identity.GetUserId();
 
             var product = _productRepository.GetProduct(invoicePosition.ProductId);
+
+            if (!ModelState.IsValid)
+            {
+                var vm = PrepareInvoicePositionVm(invoicePosition);
+                return View("InvoicePosition", vm);
+            }
 
             invoicePosition.Value = invoicePosition.Quantity * product.Value;
 
@@ -128,7 +141,7 @@ namespace InvoiceManager.Controllers
             {
                 return Json(new { Success = false, Message = e.Message });
             }
-            return Json(new { Succes = true });
+            return Json(new { Success = true });
         }
         [HttpPost]
         public ActionResult DeletePosition(int id, int invoiceId)
