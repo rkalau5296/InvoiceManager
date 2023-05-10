@@ -19,36 +19,61 @@
             </tr>
         </thead>
         <tbody>
-            @foreach(var invoice in Model)
-                {
-                    <tr>
-                        <td>
-                            <a class="font-weight-bold" href="@Url.Action("Invoice","Home", new {id= invoice.Id})">@invoice.Title</a>
-                        </td>
-                        <td>@invoice.Client.Name</td>
-                        <td>@invoice.Value</td>
-                        <td>@invoice.CreatedDate.ToString("dd-MM-yyyy")</td>
-                        <td>@invoice.PaymentDate.ToString("dd-MM-yyyy")</td>
-                        <td>
-                            <button class="btn btn-danger btn-sm" onclick="deleteInvoice()">Usuń</button>
-                        </td>
-                        <td></td>
-                    </tr>
-                }
+            @foreach (var invoice in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="font-weight-bold" href="@Url.Action("Invoice","Home", new {id= invoice.Id})">@invoice.Title</a>
+                    </td>
+                    <td>@invoice.Client.Name</td>
+                    <td>@invoice.Value</td>
+                    <td>@invoice.CreatedDate.ToString("dd-MM-yyyy")</td>
+                    <td>@invoice.PaymentDate.ToString("dd-MM-yyyy")</td>
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="deleteInvoice('@invoice.Id', this)">
+                            Usuń
+                        </button>
+                    </td>
+                    <td></td>
+                </tr>
+            }
         </tbody>
     </table>
 }
-else 
-{ 
+else
+{
     <div>Brak faktur do wyświetlania</div>
 }
 
 @section Scripts
     {
     <script type="text/javascript">
-        function deleteInvoice() {
+
+        function deleteInvoice(id, btn) {
             if (!confirm("Czy na pewno chcesz usunąć fakturę?"))
                 return;
+
+            $.ajax({
+	            type: 'POST',
+	            url: "@Url.Action("Delete", "Home")",
+	            data: {
+		            id: id
+	            },
+	            success: function (data) {
+                        if (data.Success) {
+                            var row = btn.parentNode.parentNode;
+                            row.parentNode.removeChild(row);
+		                }
+		                else {
+			                alert(data.Message);
+		                }
+	            },
+	            error: function (data) {
+			        alert(data.Message);
+	            },
+	            dataType: 'json'
+                });
         }
     </script>
-    }
+}

@@ -22,7 +22,7 @@
                     <td>@position.Product.Name</td>
                     <td>@position.Quantity</td>
                     <td>@position.Value zł</td>
-                    <td><button class="btn btn-danger btn-sm" onclick="deleteInvoicePosition()">Usuń</button></td>
+                    <td><button class="btn btn-danger btn-sm" onclick="deleteInvoicePosition('@position.Id', '@position.InvoiceId', this)">Usuń</button></td>
                 </tr>
             }
         </tbody>

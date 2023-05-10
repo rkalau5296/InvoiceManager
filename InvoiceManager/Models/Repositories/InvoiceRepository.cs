@@ -83,7 +83,7 @@ namespace InvoiceManager.Models.Repositories
         {
             using (var context = new ApplicationDbContext())
             {
-                var invoice = context.Invoices.Single(x=>x.Id == invoicePosition.Id && x.UserId == userId);
+                var invoice = context.Invoices.Single(x=>x.Id == invoicePosition.InvoiceId && x.UserId == userId);
                 
                 context.InvoicePositions.Add(invoicePosition);
                 context.SaveChanges();
