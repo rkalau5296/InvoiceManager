@@ -33,7 +33,7 @@ namespace InvoiceManager.Controllers
             return new EditInvoiceViewModel 
             {
                 Invoice=invoice,
-                Heading =invoice.Id ==0 ? "Dodawanie nowejfaktury" : "Faktura",
+                Heading =invoice.Id == 0 ? "Dodawanie nowej faktury" : "Faktura",
                 Clients = _clientRepository.GetClients(userId),
                 MethodOfPayments =_invoiceRepository.GetMethodOfPayment()
             };
@@ -158,7 +158,7 @@ namespace InvoiceManager.Controllers
             {
                 return Json(new { Success = false, Message = e.Message });
             }
-            return Json(new { Succes = true, InvoiceValue =  invoiceValue });
+            return Json(new { Success = true, InvoiceValue =  invoiceValue });
         }
         [AllowAnonymous]
         public ActionResult About()
