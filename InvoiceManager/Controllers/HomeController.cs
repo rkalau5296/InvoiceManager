@@ -22,7 +22,7 @@ namespace InvoiceManager.Controllers
         public ActionResult Invoice(int id=0)
         {
             var userId = User.Identity.GetUserId();
-            var invoice = id == 0 ? GetNeInvoice(userId) : _invoiceRepository.GetInvoice(id, userId);
+            var invoice = id == 0 ? GetNewInvoice(userId) : _invoiceRepository.GetInvoice(id, userId);
 
             var vm = PrepareInvoiceVm(invoice, userId);
             return View(vm);
@@ -39,7 +39,7 @@ namespace InvoiceManager.Controllers
             };
         }
 
-        private Invoice GetNeInvoice(string userId)
+        private Invoice GetNewInvoice(string userId)
         {
             return new Invoice
             {
@@ -78,6 +78,7 @@ namespace InvoiceManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult Invoice(Invoice invoice)
         {
             var userId = User.Identity.GetUserId();
@@ -88,6 +89,7 @@ namespace InvoiceManager.Controllers
                 var vm = PrepareInvoiceVm(invoice, userId);
                 return View("Invoice", vm);
             }
+
 
             if(invoice.Id == 0) 
             {
@@ -101,6 +103,7 @@ namespace InvoiceManager.Controllers
         }
 
         [HttpPost]
+        [ValidateAntiForgeryToken]
         public ActionResult InvoicePosition(InvoicePosition invoicePosition)
         {
             var userId = User.Identity.GetUserId();

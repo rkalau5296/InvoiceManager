@@ -15,14 +15,17 @@
     <div class="col-lg-6">
         @using (Html.BeginForm("Invoice", "Home"))
         {
+            @Html.AntiForgeryToken()
             @Html.ValidationSummary()
 
-            @Html.HiddenFor(x => x.Invoice.UserId)
+
             if (Model.Invoice.Id == 0)
             {
                 <p class="alert alert-info mt-4 mb-4">Pola tytuł, klient, sposób płatości i termin są <strong>wymagane</strong>.</p>
             }
             @Html.HiddenFor(x => x.Invoice.Id)
+            @Html.HiddenFor(x => x.Invoice.UserId)
+
             <div class="form-group">
                 @Html.LabelFor(x => x.Invoice.Title)
                 @Html.TextBoxFor(x => x.Invoice.Title, new { @class = "form-control", autofocus = "autofocus" })
@@ -74,7 +77,22 @@
     {
     <script type="text/javascript">
         function generatePdf() {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("InvoiceToPdf", "Print")",
+                data: {
+                    id: '@Model.Invoice.Id'                    
+                },
+                success: function (data) {
+                    window.location = '@Url.Action("DownloadInvoicePdf", "Print")' + '?fileGuid=' + data.FileGuid + '&fileName=' + data.FileName;
+                },
+                error: function (data) {
+                    alert(data.Message);
+                },
+                dataType: 'json',
+                cache: false
 
+            });
         }
         function deleteInvoicePosition(id, invoiceId, btn) {
             if (!confirm("Czy na pewno chcesz usunąć pozycję?"))
