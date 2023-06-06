@@ -13,6 +13,9 @@ namespace InvoiceManager.Controllers
         private InvoiceRepository _invoiceRepository = new InvoiceRepository();
         private ClientRepository _clientRepository = new ClientRepository();
         private ProductRepository _productRepository = new ProductRepository();
+        private AddressRepository _addressRepository = new AddressRepository();
+        private UserRepository _userRepository = new UserRepository();
+
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
@@ -172,10 +175,13 @@ namespace InvoiceManager.Controllers
         }
         [AllowAnonymous]
         public ActionResult Contact()
-        {
-            ViewBag.Message = "Your contact page.";
+        { 
+            var userId = User.Identity.GetUserId();
 
-            return View();
+            var users = _userRepository.GetUser(userId);
+
+            return View(users);
         }
+        
     }
 }
