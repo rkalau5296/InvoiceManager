@@ -3,6 +3,7 @@ using InvoiceManager.Models.Repositories;
 using InvoiceManager.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
+using System.Reflection.Emit;
 using System.Web.Mvc;
 
 namespace InvoiceManager.Controllers
@@ -22,7 +23,7 @@ namespace InvoiceManager.Controllers
             var invoices = _invoiceRepository.GetInvoices(userId);
             return View(invoices);
         }
-        public ActionResult Invoice(int id=0)
+        public ActionResult Invoice(int id = 0)
         {
             var userId = User.Identity.GetUserId();
             var invoice = id == 0 ? GetNewInvoice(userId) : _invoiceRepository.GetInvoice(id, userId);
@@ -33,12 +34,12 @@ namespace InvoiceManager.Controllers
 
         private EditInvoiceViewModel PrepareInvoiceVm(Invoice invoice, string userId)
         {
-            return new EditInvoiceViewModel 
+            return new EditInvoiceViewModel
             {
-                Invoice=invoice,
-                Heading =invoice.Id == 0 ? "Dodawanie nowej faktury" : "Faktura",
+                Invoice = invoice,
+                Heading = invoice.Id == 0 ? "Dodawanie nowej faktury" : "Faktura",
                 Clients = _clientRepository.GetClients(userId),
-                MethodOfPayments =_invoiceRepository.GetMethodOfPayment()
+                MethodOfPayments = _invoiceRepository.GetMethodOfPayment()
             };
         }
 
@@ -65,8 +66,8 @@ namespace InvoiceManager.Controllers
         {
             return new EditInvoicePositionViewModel
             {
-                InvoicePosition= invoicePosition,
-                Heading = invoicePosition.Id ==  0 ? "Dodawanie nowej pozycji" : "Pozycja",
+                InvoicePosition = invoicePosition,
+                Heading = invoicePosition.Id == 0 ? "Dodawanie nowej pozycji" : "Pozycja",
                 Products = _productRepository.GetProducts(),
             };
         }
@@ -94,7 +95,7 @@ namespace InvoiceManager.Controllers
             }
 
 
-            if(invoice.Id == 0) 
+            if (invoice.Id == 0)
             {
                 _invoiceRepository.Add(invoice);
             }
@@ -121,11 +122,11 @@ namespace InvoiceManager.Controllers
 
             invoicePosition.Value = invoicePosition.Quantity * product.Value;
 
-            if(invoicePosition.Id == 0) 
+            if (invoicePosition.Id == 0)
             {
                 _invoiceRepository.AddPosition(invoicePosition, userId);
             }
-            else 
+            else
             {
                 _invoiceRepository.UpdatePosition(invoicePosition, userId);
             }
@@ -164,7 +165,7 @@ namespace InvoiceManager.Controllers
             {
                 return Json(new { Success = false, Message = e.Message });
             }
-            return Json(new { Success = true, InvoiceValue =  invoiceValue });
+            return Json(new { Success = true, InvoiceValue = invoiceValue });
         }
         [AllowAnonymous]
         public ActionResult About()
@@ -175,13 +176,21 @@ namespace InvoiceManager.Controllers
         }
         [AllowAnonymous]
         public ActionResult Contact()
-        { 
-            var userId = User.Identity.GetUserId();
+        {
+            var userId = User.Identity.GetUserId();            
 
-            var users = _userRepository.GetUser(userId);
-
-            return View(users);
+            return View(PrepareContactVm(userId));
         }
-        
+
+        private ContactViewModel PrepareContactVm(string userId)
+        {
+            var user = _userRepository.GetUser(userId);
+            return new ContactViewModel
+            {
+                applicationUser = user,
+                address = _addressRepository.GetAddress(user.AddressId)
+            };
+        }
+
     }
 }

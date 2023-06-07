@@ -1,4 +1,4 @@
-﻿@model InvoiceManager.Models.Domains.ApplicationUser
+﻿@model InvoiceManager.Models.ViewModels.ContactViewModel
 @{
     ViewBag.Title = "Kontakt";
 }
@@ -6,11 +6,12 @@
 <h3>@ViewBag.Message</h3>
 
 <address>
-
+    @Model.address.Street @Model.address.Number
+    @Model.address.PostalCode @Model.address.City
     <abbr title="Phone">PhoneNo:</abbr>
-    @Model.PhoneNumber
+    @Model.applicationUser.PhoneNumber
 </address>
 
 <address>
-    <strong>Wsparcie:</strong>   <a href="@Model.Email">@Model.Email</a><br />    
+    <strong>Wsparcie:</strong>   <a href="@Model.applicationUser.Email">@Model.applicationUser.Email</a><br />    
 </address>
