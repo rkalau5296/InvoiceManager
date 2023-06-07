@@ -3,7 +3,6 @@ using InvoiceManager.Models.Repositories;
 using InvoiceManager.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
-using System.Reflection.Emit;
 using System.Web.Mvc;
 
 namespace InvoiceManager.Controllers
