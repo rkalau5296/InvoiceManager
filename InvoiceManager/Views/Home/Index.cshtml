@@ -23,12 +23,18 @@
             {
                 <tr>
                     <td>
-                        <a class="font-weight-bold" href="@Url.Action("Invoice","Home", new {id= invoice.Id})">@invoice.Title</a>
+                        <a class="font-weight-bold" style ="font-weight: bold" href="@Url.Action("Invoice","Home", new {id= invoice.Id})">@invoice.Title</a>
                     </td>
                     <td>@invoice.Client.Name</td>
                     <td>@invoice.Value</td>
                     <td>@invoice.CreatedDate.ToString("dd-MM-yyyy")</td>
                     <td>@invoice.PaymentDate.ToString("dd-MM-yyyy")</td>
+                    <td>
+                        <button class="btn btn-secondary btn-sm"
+                                onclick="printPdf()">
+                            Generuj PDF
+                        </button>
+                    </td>
                     <td>
                         <button class="btn btn-danger btn-sm"
                                 onclick="deleteInvoice('@invoice.Id', this)">
