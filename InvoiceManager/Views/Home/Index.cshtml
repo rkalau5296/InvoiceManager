@@ -31,7 +31,7 @@
                     <td>@invoice.PaymentDate.ToString("dd-MM-yyyy")</td>
                     <td>
                         <button class="btn btn-secondary btn-sm"
-                                onclick="printPdf()">
+                                onclick="generatePdf('@invoice.Id', this)">
                             Generuj PDF
                         </button>
                     </td>
@@ -80,6 +80,24 @@ else
 	            },
 	            dataType: 'json'
                 });
+        }
+        function generatePdf(id, btn) {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("InvoiceToPdf", "Print")",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    window.location = '@Url.Action("DownloadInvoicePdf", "Print")' + '?fileGuid=' + data.FileGuid + '&fileName=' + data.FileName;
+                },
+                error: function (data) {
+                    alert(data.Message);
+                },
+                dataType: 'json',
+                cache: false
+
+            });
         }
     </script>
 }
