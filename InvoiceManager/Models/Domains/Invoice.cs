@@ -21,6 +21,7 @@ namespace InvoiceManager.Models.Domains
         public int MethodOfPaymentId { get; set; }
         [Display(Name = "Data płatności")]
         public DateTime PaymentDate { get; set; }
+        [Display(Name = "Data wystawienia faktury")]
         public DateTime CreatedDate { get; set; }
         [Display(Name = "Uwagi")]
         public string Comments { get; set; }
