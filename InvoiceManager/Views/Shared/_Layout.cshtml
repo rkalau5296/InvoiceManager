@@ -42,6 +42,22 @@
     @Scripts.Render("~/bundles/jquery")
     @Scripts.Render("~/bundles/jqueryval")    
     @Scripts.Render("~/bundles/bootstrap")
+
+    <div class="privacyPoliceInfo" style="display:none;">
+        Serwis wykorzystuje pliki cookies. Korzystając ze stronywyrażasz zgodę na wykorzystywanie plików cookies.
+        <button class="btn btn-light btn-sm mx-3 my-1 privacyPoliceBtn" onclick="closePrivacyPolice()" type="button" >Ok, rozumiem</button>
+    </div>
+
+    <script>
+        function closePrivacyPolice() {
+            $('.privacyPoliceInfo').css("display", "none");
+            $.cookie("privacyPolicy", "1", { path: '/', expires: 365 });
+        }
+        $(document).ready(function () {
+            if ($.cookie("privacyPolicy") != 1)
+                $('.privacyPoliceInfo').css("display", "");
+        })
+    </script>
     @RenderSection("scripts", required: false)
 </body>
 </html>
