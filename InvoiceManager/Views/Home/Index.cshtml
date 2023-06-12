@@ -30,10 +30,10 @@
                     <td>@invoice.CreatedDate.ToString("dd-MM-yyyy")</td>
                     <td>@invoice.PaymentDate.ToString("dd-MM-yyyy")</td>
                     <td>
-                        <button class="btn btn-secondary btn-sm"
+                        <a class="btn btn-secondary btn-sm" href="@Url.Action("InvoiceToPdf","Print", new {id= invoice.Id})"
                                 onclick="generatePdf('@invoice.Id', this)">
                             Generuj PDF
-                        </button>
+                        </a>
                     </td>
                     <td>
                         <button class="btn btn-danger btn-sm"

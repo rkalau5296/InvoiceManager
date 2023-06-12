@@ -5,7 +5,7 @@
     margin-bottom: 20px;
 }
 
-nav, footer {
+nav, footer, .privacyPoliceInfo {
     display: none !important;
 }
 
