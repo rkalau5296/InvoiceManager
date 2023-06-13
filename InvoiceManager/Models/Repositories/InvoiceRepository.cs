@@ -1,5 +1,4 @@
-﻿
-using InvoiceManager.Models.Domains;
+﻿using InvoiceManager.Models.Domains;
 using System;
 using System.Collections.Generic;
 using System.Linq;

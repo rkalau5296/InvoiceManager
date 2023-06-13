@@ -1,0 +1,50 @@
+﻿@model IEnumerable<InvoiceManager.Models.Domains.Client>
+@{
+    ViewBag.Title = "Lista odbiorców";
+}
+<h1 class="mb-3">Lista odbiorców</h1>
+<button class="btn btn-primary mb-3" onclick='window.location.href="@Url.Action("EditClient","Home")"'>Dodaj</button>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-hover table-striped mt-3 mb-5">
+        <thead>
+            <tr>
+                <th scope="col">Odbiorca</th>                
+                <th scope="col">Adres</th>
+                <th scope="col">Email</th>
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var client in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="font-weight-bold" style="font-weight: bold" href="@Url.Action("EditClient","Home", new {id= client.Id})">@client.Name</a>
+                    </td>
+                    
+                    <td>@client.Address.Street @client.Address.Number @client.Address.PostalCode @client.Address.City</td>
+                    <td>@client.Email</td>                    
+                    <td>
+                        <a class="btn btn-secondary btn-sm" 
+                           onclick="generatePdf('@client.Id', this)">
+                            Generuj PDF
+                        </a>
+                    </td>
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="deleteInvoice('@client.Id', this)">
+                            Usuń
+                        </button>
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div>Brak odbiorców do wyświetlania</div>
+}
+

@@ -1,9 +1,11 @@
-﻿using InvoiceManager.Models.Domains;
+﻿using InvoiceManager.Models;
+using InvoiceManager.Models.Domains;
 using InvoiceManager.Models.Repositories;
 using InvoiceManager.Models.ViewModels;
 using Microsoft.AspNet.Identity;
 using System;
 using System.Web.Mvc;
+using System.Xml.Linq;
 
 namespace InvoiceManager.Controllers
 {
@@ -180,7 +182,13 @@ namespace InvoiceManager.Controllers
 
             return View(PrepareContactVm(userId));
         }
-
+        [AllowAnonymous]
+        public ActionResult Client()
+        {
+            var userId = User.Identity.GetUserId();
+            var clients = _clientRepository.GetClients(userId);
+            return View(clients);
+        }
         private ContactViewModel PrepareContactVm(string userId)
         {
             var user = _userRepository.GetUser(userId);
@@ -191,5 +199,43 @@ namespace InvoiceManager.Controllers
             };
         }
 
+        private ContactViewModel PrepareClientVm(string userId)
+        {
+            var user = _userRepository.GetUser(userId);
+            return new ContactViewModel
+            {
+                applicationUser = user,
+                address = _addressRepository.GetAddress(user.AddressId)
+            };
+        }
+        [AllowAnonymous]
+        public ActionResult EditClient(int id = 0)
+        {
+            var userId = User.Identity.GetUserId();
+
+
+            var client = id == 0 ? GetNewClient(userId) : _clientRepository.GetClient(id, userId);
+
+            //var vm = PrepareClientVm(client, userId);
+            return View(client);
+        }
+
+        private Client GetNewClient(string userId)
+        {
+            return new Client
+            {
+                UserId = userId,                
+            };
+        }
+        private EditClientViewModel PrepareClientVm(Client client, string userId)
+        {
+            return new EditClientViewModel
+            {
+                Address = client.Address,
+                Clients = _clientRepository.GetClients(userId),
+                Heading = client.Id == 0 ? "Dodawanie nowego odbiorcy" : "Odbiorca",
+                
+            };
+        }
     }
 }
