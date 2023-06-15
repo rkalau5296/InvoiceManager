@@ -28,5 +28,35 @@ namespace InvoiceManager.Models.Repositories
                     .Single(x => x.UserId == userId && x.Id == id);
             }
         }
+        public void Add(Client client)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                context.Clients.Add(client);                
+                context.SaveChanges();
+            }
+        }
+
+        public void Update(Client client)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var clientToUpdate = context.Clients.Single(x => x.Id == client.Id && x.UserId == client.UserId);
+
+                clientToUpdate.Name = client.Name;
+                clientToUpdate.Email = client.Email;                
+                context.SaveChanges();
+            }
+        }
+        public void Delete(int id, string userId)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var clientToDelete = context.Clients.Single(x => x.Id == id && x.UserId == userId);
+
+                context.Clients.Remove(clientToDelete);
+                context.SaveChanges();
+            }
+        }
     }
 }

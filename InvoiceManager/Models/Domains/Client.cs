@@ -14,6 +14,7 @@ namespace InvoiceManager.Models.Domains
 
         public int Id { get; set; }
         [Required]
+        [Display(Name = "Nazwa")]
         public string Name { get; set; }
         public int AddressId { get; set; }
         [Required]

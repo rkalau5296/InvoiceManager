@@ -14,11 +14,33 @@ namespace InvoiceManager.Models.Repositories
             }
         }
 
-        public Address GetAddress(int userId)
+        public Address GetAddress(int id)
         {
             using (var context = new ApplicationDbContext())
             {
-                return context.Addresses.Single(x => x.Id == userId);
+                return context.Addresses.Single(x => x.Id == id);
+            }
+        }
+        public void Add(Address address)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                context.Addresses.Add(address);
+                context.SaveChanges();
+            }
+        }
+        public void Update(Address address)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var addressToUpdate = context.Addresses.Single(x => x.Id == address.Id);
+
+                addressToUpdate.Street = address.Street;
+                addressToUpdate.Number = address.Number;
+                addressToUpdate.City = address.City;
+                addressToUpdate.PostalCode = address.PostalCode;
+
+                context.SaveChanges();
             }
         }
     }

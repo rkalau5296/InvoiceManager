@@ -94,8 +94,6 @@ namespace InvoiceManager.Controllers
                 var vm = PrepareInvoiceVm(invoice, userId);
                 return View("Invoice", vm);
             }
-
-
             if (invoice.Id == 0)
             {
                 _invoiceRepository.Add(invoice);
@@ -213,11 +211,10 @@ namespace InvoiceManager.Controllers
         {
             var userId = User.Identity.GetUserId();
 
-
             var client = id == 0 ? GetNewClient(userId) : _clientRepository.GetClient(id, userId);
 
-            //var vm = PrepareClientVm(client, userId);
-            return View(client);
+            var vm = PrepareEditClientVm(client);
+            return View(vm);
         }
 
         private Client GetNewClient(string userId)
@@ -227,15 +224,40 @@ namespace InvoiceManager.Controllers
                 UserId = userId,                
             };
         }
-        private EditClientViewModel PrepareClientVm(Client client, string userId)
+        private EditClientViewModel PrepareEditClientVm(Client client)
         {
             return new EditClientViewModel
             {
-                Address = client.Address,
-                Clients = _clientRepository.GetClients(userId),
-                Heading = client.Id == 0 ? "Dodawanie nowego odbiorcy" : "Odbiorca",
-                
+                Client = client,
+                Address = client.Address,                
+                Heading = client.Id == 0 ? "Dodawanie nowego odbiorcy" : "Odbiorca",                
             };
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Client(Client client)
+        {
+            var userId = User.Identity.GetUserId();
+            client.UserId = userId;
+
+            if (!ModelState.IsValid)
+            {
+                var vm = PrepareEditClientVm(client);
+                return View("Client", vm);
+            }
+
+            if (client.Id == 0)
+            {
+                _addressRepository.Add(client.Address);
+                _clientRepository.Add(client);
+            }
+            else
+            {
+                _addressRepository.Update(client.Address);
+                _clientRepository.Update(client);
+            }
+            return RedirectToAction("Client");
+        }
+
     }
 }

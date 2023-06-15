@@ -1,45 +1,83 @@
-﻿@model InvoiceManager.Models.Domains.Client
+﻿@model InvoiceManager.Models.ViewModels.EditClientViewModel
 @{
-    ViewBag.Title = "Edycja odbiorcy";
+    ViewBag.Title = Model.Heading;
 }
 
 <h1 class="mb-3">Edycja odbiorcy</h1>
 
 <div class="row">
     <div class="col-lg-6">
+        @using (Html.BeginForm("Client", "Home"))
+        {
 
-       
-        @Html.AntiForgeryToken()
-        @Html.ValidationSummary()
-        
-        <p class="alert alert-info mt-4 mb-4">Pola tytuł, klient, sposób płatości i termin są <strong>wymagane</strong>.</p>
-        
-        @Html.HiddenFor(x => x.UserId)
-        @Html.HiddenFor(x => x.Id)
+            @Html.AntiForgeryToken()
+            @Html.ValidationSummary()
 
-        <div class="form-group">
-            @Html.LabelFor(x => x.Name)
-            @Html.TextBoxFor(x => x.Name, new { @class = "form-control", autofocus = "autofocus" })
-            @Html.ValidationMessageFor(x => x.Name)
-        </div>
+            <p class="alert alert-info mt-4 mb-4">Pola Nazwa, Adres i email są <strong>wymagane</strong>.</p>
 
-        <div class="form-group">
-            @Html.LabelFor(x => x.Address)            
-            @Html.TextBoxFor(x => x.Address, new { @class = "form-control", autofocus = "autofocus" })
-            @Html.ValidationMessageFor(x => x.Address)
-        </div>
+            @Html.HiddenFor(x => x.Client.UserId)
+            @Html.HiddenFor(x => x.Client.Id)
 
-        <div class="form-group">
-            @Html.LabelFor(x => x.Email)
-            @Html.TextBoxFor(x => x.Email, new { @class = "form-control", autofocus = "autofocus" })
-            @Html.ValidationMessageFor(x => x.Email)
-        </div>
-        <br/>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Client.Name)
+                @Html.TextBoxFor(x => x.Client.Name, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.Client.Name)
+            </div>
 
-        
+            <div class="form-group">
+                @Html.LabelFor(x => x.Address.Street)
+                @Html.TextBoxFor(x => x.Address.Street, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.Address.Street)
+            </div>
 
-        <button class="btn btn-primary btn-lg mb-5" type="submit">Zapisz</button>
+            <div class="form-group">
+                @Html.LabelFor(x => x.Address.Number)
+                @Html.TextBoxFor(x => x.Address.Number, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.Address.Number)
+            </div>
 
-        
+            <div class="form-group">
+                @Html.LabelFor(x => x.Address.PostalCode)
+                @Html.TextBoxFor(x => x.Address.PostalCode, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.Address.PostalCode)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Address.City)
+                @Html.TextBoxFor(x => x.Address.City, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.Address.City)
+            </div>
+
+            <div class="form-group">
+                @Html.LabelFor(x => x.Client.Email)
+                @Html.TextBoxFor(x => x.Client.Email, new { @class = "form-control", autofocus = "autofocus" })
+                @Html.ValidationMessageFor(x => x.Client.Email)
+            </div>
+            <br />
+
+            <button class="btn btn-primary btn-lg mb-5" type="submit">Zapisz</button>
+
+        }
     </div>
 </div>
+
+@section Scripts
+    {
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $.validator.methods.number = function (value, element) {
+                return this.optional(element) || /^-?(?:\d+|\d{1,3}(?:[\s\.,]\d{3})+)(?:[\.,]\d+)?$/.test(value);
+            }
+            $.validator.methods.date = function (value, element) {
+                var isChrome = /Chrome/.test(navigator.userAgent) && /Google Inc/.test(navigator.vendor);
+                if (isChrome) {
+                    var d = new Date();
+                    return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                }
+                else {
+                    return this.optional(element) || !/Invalid|NaN/.test(new Date(d.toLocaleDateString(value)));
+                }
+            }
+        });
+    </script>
+}

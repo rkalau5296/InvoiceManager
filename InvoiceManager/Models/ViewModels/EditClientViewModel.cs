@@ -8,8 +8,7 @@ namespace InvoiceManager.Models.ViewModels
 {
     public class EditClientViewModel
     {
-        public Address Address { get; set; }
-        public List<Client> Clients { get; set; }
+        public Address Address { get; set; }        
         public string Heading { get; set; }
         public Client Client { get; set; }
     }
