@@ -10,7 +10,7 @@
     <table class="table table-hover table-striped mt-3 mb-5">
         <thead>
             <tr>
-                <th scope="col">Odbiorca</th>                
+                <th scope="col">Odbiorca</th>
                 <th scope="col">Adres</th>
                 <th scope="col">Email</th>
             </tr>
@@ -22,11 +22,11 @@
                     <td>
                         <a class="font-weight-bold" style="font-weight: bold" href="@Url.Action("EditClient","Home", new {id= client.Id})">@client.Name</a>
                     </td>
-                    
+
                     <td>@client.Address.Street @client.Address.Number @client.Address.PostalCode @client.Address.City</td>
-                    <td>@client.Email</td>                    
+                    <td>@client.Email</td>
                     <td>
-                        <a class="btn btn-secondary btn-sm" 
+                        <a class="btn btn-secondary btn-sm" href="@Url.Action("EditClient","Print", new {id= client.Id})"
                            onclick="generatePdf('@client.Id', this)">
                             Generuj PDF
                         </a>
@@ -46,5 +46,54 @@
 else
 {
     <div>Brak odbiorców do wyświetlania</div>
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        function deleteInvoice(id, btn) {
+            if (!confirm("Czy na pewno chcesz usunąć fakturę?"))
+                return;
+
+            $.ajax({
+	            type: 'POST',
+	            url: "@Url.Action("DeleteClient", "Home")",
+	            data: {
+		            id: id
+	            },
+	            success: function (data) {
+                        if (data.Success) {
+                            var row = btn.parentNode.parentNode;
+                            row.parentNode.removeChild(row);
+		                }
+		                else {
+			                alert(data.Message);
+		                }
+	            },
+	            error: function (data) {
+			        alert(data.Message);
+	            },
+	            dataType: 'json'
+                });
+        }
+        function generatePdf(id) {
+            $.ajax({
+                type: 'POST',
+                url: "@Url.Action("ClientToPdf", "Print")",
+                data: {
+                    id: id
+                },
+                success: function (data) {
+                    window.location = '@Url.Action("DownloadClientPdf", "Print")' + '?fileGuid=' + data.FileGuid + '&fileName=' + data.FileName;
+                },
+                error: function (data) {
+                    alert(data.Message);
+                },
+                dataType: 'json',
+                cache: false
+
+            });
+        }
+    </script>
 }
 

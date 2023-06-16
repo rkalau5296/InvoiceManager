@@ -1,0 +1,25 @@
+﻿@model InvoiceManager.Models.Domains.Client
+@{
+    ViewBag.Title = "Odbiorca";
+}
+
+<link href="@Url.Content("~/Content/PrintInvoice.css")" rel="stylesheet" type="text/css" />
+
+<div class="invoice-font">
+    <div class="row">
+        <div class="col-12 header-font">
+            <div>Odbiorca</div>            
+        </div>
+    </div>
+    <div>
+        <div>@Model.Name</div>
+        <div>Ul.@Model.Address.Street @Model.Address.Number</div>
+        <div>@Model.Address.PostalCode @Model.Address.City</div>
+        <div>Email: @Model.Email</div>
+    </div>
+    <div class="row mt-5">
+        <div class="col-5">
+            <img src="@Url.Content("~/Content/Images/images.png")" alt="logo" class="logo">
+        </div>        
+    </div>
+</div>

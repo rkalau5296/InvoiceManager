@@ -242,8 +242,7 @@ namespace InvoiceManager.Controllers
                 return View("Client", vm);
             }
             if (client.Id == 0)
-            {
-                _addressRepository.Add(client.Address);
+            {                
                 _clientRepository.Add(client);
             }
             else
@@ -254,6 +253,21 @@ namespace InvoiceManager.Controllers
                 _clientRepository.Update(client);
             }
             return RedirectToAction("Client");
+        }
+        [HttpPost]
+        public ActionResult DeleteClient(int id)
+        {
+            try
+            {
+                var userId = User.Identity.GetUserId();
+                _clientRepository.Delete(id, userId);
+                _addressRepository.Delete(id);
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Message = e.Message });
+            }
+            return Json(new { Success = true });
         }
 
     }

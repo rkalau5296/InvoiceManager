@@ -20,15 +20,7 @@ namespace InvoiceManager.Models.Repositories
             {
                 return context.Addresses.Single(x => x.Id == id);
             }
-        }
-        public void Add(Address address)
-        {
-            using (var context = new ApplicationDbContext())
-            {
-                context.Addresses.Add(address);
-                context.SaveChanges();
-            }
-        }
+        }        
         public void Update(Address address)
         {
             using (var context = new ApplicationDbContext())
@@ -40,6 +32,16 @@ namespace InvoiceManager.Models.Repositories
                 addressToUpdate.City = address.City;
                 addressToUpdate.PostalCode = address.PostalCode;
 
+                context.SaveChanges();
+            }
+        }
+        public void Delete(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var addressToDelete = context.Addresses.Single(x => x.Id == id);
+
+                context.Addresses.Remove(addressToDelete);
                 context.SaveChanges();
             }
         }
