@@ -228,24 +228,19 @@ namespace InvoiceManager.Controllers
         {
             return new EditClientViewModel
             {
-                Client = client,
-                Address = client.Address,                
+                Client = client,                
                 Heading = client.Id == 0 ? "Dodawanie nowego odbiorcy" : "Odbiorca",                
             };
         }
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Client(Client client)
-        {
-            var userId = User.Identity.GetUserId();
-            client.UserId = userId;
-
+        {  
             if (!ModelState.IsValid)
             {
                 var vm = PrepareEditClientVm(client);
                 return View("Client", vm);
             }
-
             if (client.Id == 0)
             {
                 _addressRepository.Add(client.Address);
@@ -253,6 +248,8 @@ namespace InvoiceManager.Controllers
             }
             else
             {
+                var addressId = _clientRepository.GetAddressId(client.Id);
+                client.Address.Id = addressId;
                 _addressRepository.Update(client.Address);
                 _clientRepository.Update(client);
             }

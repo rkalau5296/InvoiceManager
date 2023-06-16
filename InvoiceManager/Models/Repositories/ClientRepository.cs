@@ -58,5 +58,15 @@ namespace InvoiceManager.Models.Repositories
                 context.SaveChanges();
             }
         }
+
+        public int GetAddressId(int id)
+        {
+            using (var context = new ApplicationDbContext())
+            {
+                var client = context.Clients.Single(x => x.Id == id);
+
+                return client.AddressId;
+            }
+        }
     }
 }
