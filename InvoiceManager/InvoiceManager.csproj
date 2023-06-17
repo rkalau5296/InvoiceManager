@@ -189,6 +189,10 @@
     <Compile Include="Migrations\202306122050262_first.designer.cs">
       <DependentUpon>202306122050262_first.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306172200294_AddProduct.cs" />
+    <Compile Include="Migrations\202306172200294_AddProduct.designer.cs">
+      <DependentUpon>202306172200294_AddProduct.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Domains\Address.cs" />
     <Compile Include="Models\Domains\Client.cs" />
@@ -450,6 +454,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306122050262_first.resx">
       <DependentUpon>202306122050262_first.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306172200294_AddProduct.resx">
+      <DependentUpon>202306172200294_AddProduct.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>
