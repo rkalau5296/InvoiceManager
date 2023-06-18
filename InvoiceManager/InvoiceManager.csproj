@@ -212,6 +212,7 @@
     <Compile Include="Models\ViewModels\EditClientViewModel.cs" />
     <Compile Include="Models\ViewModels\EditInvoicePositionViewModel.cs" />
     <Compile Include="Models\ViewModels\EditInvoiceViewModel.cs" />
+    <Compile Include="Models\ViewModels\EditProductViewModel.cs" />
     <Compile Include="Models\ViewModels\FactorViewModel.cs" />
     <Compile Include="Models\ViewModels\ForgotPasswordViewModel.cs" />
     <Compile Include="Models\ViewModels\ExternalLoginConfirmationViewModel.cs" />
@@ -438,6 +439,7 @@
     <Content Include="Views\Home\Client.cshtml" />
     <Content Include="Views\Home\EditClient.cshtml" />
     <Content Include="Views\Print\ClientTemplate.cshtml" />
+    <Content Include="Views\Home\Product.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />

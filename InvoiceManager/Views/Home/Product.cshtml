@@ -1,9 +1,9 @@
-﻿@model IEnumerable<InvoiceManager.Models.Domains.Client>
+﻿@model IEnumerable<InvoiceManager.Models.Domains.Product>
 @{
-    ViewBag.Title = "Lista odbiorców";
+    ViewBag.Title = "Lista produktów";
 }
 <h1 class="mb-3">Lista odbiorców</h1>
-<button class="btn btn-primary mb-3" onclick='window.location.href="@Url.Action("EditClient","Home")"'>Dodaj</button>
+<button class="btn btn-primary mb-3" onclick='window.location.href="@Url.Action("EditProduct","Home")"'>Dodaj</button>
 
 @if (Model != null && Model.Any())
 {
@@ -16,24 +16,23 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var client in Model)
+            @foreach (var product in Model)
             {
                 <tr>
                     <td>
-                        <a class="font-weight-bold" style="font-weight: bold" href="@Url.Action("EditClient","Home", new {id= client.Id})">@client.Name</a>
+                        <a class="font-weight-bold" style="font-weight: bold" href="@Url.Action("EditProduct","Home", new {id= product.Id})">@product.Name</a>
                     </td>
 
-                    <td>@client.Address.Street @client.Address.Number @client.Address.PostalCode @client.Address.City</td>
-                    <td>@client.Email</td>
+                    <td>@product.Value</td>                    
                     <td>
-                        <a class="btn btn-secondary btn-sm" href="@Url.Action("EditClient","Print", new {id= client.Id})"
-                           onclick="generatePdf('@client.Id', this)">
+                        <a class="btn btn-secondary btn-sm" href="@Url.Action("EditProduct","Print", new {id= product.Id})"
+                           onclick="generatePdf('@product.Id', this)">
                             Generuj PDF
                         </a>
                     </td>
                     <td>
                         <button class="btn btn-danger btn-sm"
-                                onclick="deleteInvoice('@client.Id', this)">
+                                onclick="deleteInvoice('@product.Id', this)">
                             Usuń
                         </button>
                     </td>
@@ -52,12 +51,12 @@ else
     <script type="text/javascript">
 
         function deleteInvoice(id, btn) {
-            if (!confirm("Czy na pewno chcesz usunąć odbiorcę?"))
+            if (!confirm("Czy na pewno chcesz usunąć product?"))
                 return;
 
             $.ajax({
 	            type: 'POST',
-	            url: "@Url.Action("DeleteClient", "Home")",
+	            url: "@Url.Action("DeleteProduct", "Home")",
 	            data: {
 		            id: id
 	            },
@@ -79,12 +78,12 @@ else
         function generatePdf(id) {
             $.ajax({
                 type: 'POST',
-                url: "@Url.Action("ClientToPdf", "Print")",
+                url: "@Url.Action("ProductToPdf", "Print")",
                 data: {
                     id: id
                 },
                 success: function (data) {
-                    window.location = '@Url.Action("DownloadClientPdf", "Print")' + '?fileGuid=' + data.FileGuid + '&fileName=' + data.FileName;
+                    window.location = '@Url.Action("DownloadProductPdf", "Print")' + '?fileGuid=' + data.FileGuid + '&fileName=' + data.FileName;
                 },
                 error: function (data) {
                     alert(data.Message);
