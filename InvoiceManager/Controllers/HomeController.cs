@@ -18,6 +18,8 @@ namespace InvoiceManager.Controllers
         private AddressRepository _addressRepository = new AddressRepository();
         private UserRepository _userRepository = new UserRepository();
 
+        //INVOICE-------
+        
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
@@ -32,7 +34,6 @@ namespace InvoiceManager.Controllers
             var vm = PrepareInvoiceVm(invoice, userId);
             return View(vm);
         }
-
         private EditInvoiceViewModel PrepareInvoiceVm(Invoice invoice, string userId)
         {
             return new EditInvoiceViewModel
@@ -43,7 +44,6 @@ namespace InvoiceManager.Controllers
                 MethodOfPayments = _invoiceRepository.GetMethodOfPayment()
             };
         }
-
         private Invoice GetNewInvoice(string userId)
         {
             return new Invoice
@@ -53,26 +53,23 @@ namespace InvoiceManager.Controllers
                 PaymentDate = DateTime.Now.AddDays(7),
             };
         }
-
         public ActionResult InvoicePosition(int invoiceId, int invoicePositionId = 0)
         {
             var userId = User.Identity.GetUserId();
             var invoicePosition = invoicePositionId == 0 ? GetNewPosition(invoiceId, invoicePositionId) : _invoiceRepository.GetInvoicePosition(invoicePositionId, userId);
 
-            var vm = PrepareInvoicePositionVm(invoicePosition);
+            var vm = PrepareInvoicePositionVm(invoicePosition, userId);
             return View(vm);
         }
-
-        private EditInvoicePositionViewModel PrepareInvoicePositionVm(InvoicePosition invoicePosition)
+        private EditInvoicePositionViewModel PrepareInvoicePositionVm(InvoicePosition invoicePosition, string userId)
         {
             return new EditInvoicePositionViewModel
             {
                 InvoicePosition = invoicePosition,
                 Heading = invoicePosition.Id == 0 ? "Dodawanie nowej pozycji" : "Pozycja",
-                Products = _productRepository.GetProducts(),
+                Products = _productRepository.GetProducts(userId),
             };
         }
-
         private InvoicePosition GetNewPosition(int invoiceId, int invoicePositionId)
         {
             return new InvoicePosition
@@ -81,7 +78,6 @@ namespace InvoiceManager.Controllers
                 Id = invoicePositionId,
             };
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult Invoice(Invoice invoice)
@@ -104,18 +100,17 @@ namespace InvoiceManager.Controllers
             }
             return RedirectToAction("Index");
         }
-
         [HttpPost]
         [ValidateAntiForgeryToken]
         public ActionResult InvoicePosition(InvoicePosition invoicePosition)
         {
             var userId = User.Identity.GetUserId();
 
-            var product = _productRepository.GetProduct(invoicePosition.ProductId);
+            var product = _productRepository.GetProduct(invoicePosition.ProductId, userId);
 
             if (!ModelState.IsValid)
             {
-                var vm = PrepareInvoicePositionVm(invoicePosition);
+                var vm = PrepareInvoicePositionVm(invoicePosition, userId);
                 return View("InvoicePosition", vm);
             }
 
@@ -166,6 +161,9 @@ namespace InvoiceManager.Controllers
             }
             return Json(new { Success = true, InvoiceValue = invoiceValue });
         }
+
+        //ABOUT----
+
         [AllowAnonymous]
         public ActionResult About()
         {
@@ -173,19 +171,15 @@ namespace InvoiceManager.Controllers
 
             return View();
         }
+
+        //CONTACT----
+
         [AllowAnonymous]
         public ActionResult Contact()
         {
             var userId = User.Identity.GetUserId();            
 
             return View(PrepareContactVm(userId));
-        }
-        [AllowAnonymous]
-        public ActionResult Client()
-        {
-            var userId = User.Identity.GetUserId();
-            var clients = _clientRepository.GetClients(userId);
-            return View(clients);
         }
         private ContactViewModel PrepareContactVm(string userId)
         {
@@ -197,14 +191,14 @@ namespace InvoiceManager.Controllers
             };
         }
 
-        private ContactViewModel PrepareClientVm(string userId)
+        //CLIENT----
+
+        [AllowAnonymous]
+        public ActionResult Client()
         {
-            var user = _userRepository.GetUser(userId);
-            return new ContactViewModel
-            {
-                applicationUser = user,
-                address = _addressRepository.GetAddress(user.AddressId)
-            };
+            var userId = User.Identity.GetUserId();
+            var clients = _clientRepository.GetClients(userId);
+            return View(clients);
         }
         [AllowAnonymous]
         public ActionResult EditClient(int id = 0)
@@ -216,7 +210,6 @@ namespace InvoiceManager.Controllers
             var vm = PrepareEditClientVm(client);
             return View(vm);
         }
-
         private Client GetNewClient(string userId)
         {
             return new Client
@@ -270,5 +263,57 @@ namespace InvoiceManager.Controllers
             return Json(new { Success = true });
         }
 
+        //PRODUCT---
+
+        [AllowAnonymous]
+        public ActionResult Product()
+        {
+            var userId = User.Identity.GetUserId();
+            var products = _productRepository.GetProducts(userId);
+            return View(products);
+        }
+        public ActionResult EditProduct(int id = 0)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var product = id == 0 ? GetNewProduct(userId) : _productRepository.GetProduct(id, userId);
+
+            var vm = PrepareEditProductVm(product);
+            return View(vm);
+        }
+        private Product GetNewProduct(string userId)
+        {
+            return new Product
+            {
+                UserId = userId,
+            };
+        }
+        private EditProductViewModel PrepareEditProductVm(Product product)
+        {
+            return new EditProductViewModel
+            {
+                Product = product,
+                Heading = product.Id == 0 ? "Dodawanie nowego odbiorcy" : "Odbiorca",
+            };
+        }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult Product(Product product)
+        {
+            if (!ModelState.IsValid)
+            {
+                var vm = PrepareEditProductVm(product);
+                return View("Product", vm);
+            }
+            if (product.Id == 0)
+            {
+                _productRepository.Add(product);
+            }
+            else
+            {
+                _productRepository.Update(product);
+            }
+            return RedirectToAction("Product");
+        }
     }
 }
