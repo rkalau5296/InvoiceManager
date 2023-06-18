@@ -1,0 +1,23 @@
+﻿@model InvoiceManager.Models.Domains.Product
+@{
+    ViewBag.Title = "Produkt";
+}
+
+<link href="@Url.Content("~/Content/PrintInvoice.css")" rel="stylesheet" type="text/css" />
+
+<div class="invoice-font">
+    <div class="row">
+        <div class="col-12 header-font">
+            <div>Produkt</div>
+        </div>
+    </div>
+    <div>
+        <div>@Model.Name</div>
+        <div>@Model.Value</div>        
+    </div>
+    <div class="row mt-5">
+        <div class="col-5">
+            <img src="@Url.Content("~/Content/Images/images.png")" alt="logo" class="logo">
+        </div>
+    </div>
+</div>

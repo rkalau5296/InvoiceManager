@@ -13,6 +13,9 @@ namespace InvoiceManager.Controllers
     {       
         private InvoiceRepository _invoiceRepository = new InvoiceRepository();
         private ClientRepository _clientRepository = new ClientRepository();
+        private ProductRepository _productRepository = new ProductRepository();
+
+        //INVOICE print--
 
         public ActionResult InvoiceToPdf(int id)
         {
@@ -29,7 +32,6 @@ namespace InvoiceManager.Controllers
                     FileName = $@"Faktura_{invoice.Id}.pdf"
                 });            
         }
-
         private byte[] GetPdfContent(Invoice invoice)
         {
             var pdfResult = new ViewAsPdf(@"InvoiceTemplate", invoice)
@@ -40,7 +42,6 @@ namespace InvoiceManager.Controllers
 
             return pdfResult.BuildFile(ControllerContext);
         }
-
         public ActionResult DownloadInvoicePdf(string fileGuid, string fileName)
         {
             if (TempData[fileGuid] == null)
@@ -51,6 +52,8 @@ namespace InvoiceManager.Controllers
             var data = TempData[fileGuid] as byte[];
             return File(data, "application/pdf", fileName);
         }
+
+        //CLIENT print--
 
         public ActionResult ClientToPdf(int id)
         {
@@ -67,7 +70,6 @@ namespace InvoiceManager.Controllers
                     FileName = $@"Klient_{client.Id}.pdf"
                 });
         }
-
         private byte[] GetClientPdfContent(Client client)
         {
             var pdfResult = new ViewAsPdf(@"ClientTemplate", client)
@@ -78,12 +80,49 @@ namespace InvoiceManager.Controllers
 
             return pdfResult.BuildFile(ControllerContext);
         }
-
         public ActionResult DownloadClientPdf(string fileGuid, string fileName)
         {
             if (TempData[fileGuid] == null)
             {
                 throw new Exception("Błąd przy próbie exportu faktury do PDF.");
+            }
+
+            var data = TempData[fileGuid] as byte[];
+            return File(data, "application/pdf", fileName);
+        }
+
+        //PRODUCT print--
+
+        public ActionResult ProductToPdf(int id)
+        {
+            var handle = Guid.NewGuid().ToString();
+            var userId = User.Identity.GetUserId();
+            var product = _productRepository.GetProduct(id, userId);
+
+            TempData[handle] = GetProductPdfContent(product);
+
+            return Json(
+                new
+                {
+                    FileGuid = handle,
+                    FileName = $@"Product{product.Id}.pdf"
+                });
+        }
+        private byte[] GetProductPdfContent(Product product)
+        {
+            var pdfResult = new ViewAsPdf(@"ProductTemplate", product)
+            {
+                PageSize = Size.A4,
+                PageOrientation = Orientation.Portrait,
+            };
+
+            return pdfResult.BuildFile(ControllerContext);
+        }
+        public ActionResult DownloadProductPdf(string fileGuid, string fileName)
+        {
+            if (TempData[fileGuid] == null)
+            {
+                throw new Exception("Błąd przy próbie exportu produktu do PDF.");
             }
 
             var data = TempData[fileGuid] as byte[];

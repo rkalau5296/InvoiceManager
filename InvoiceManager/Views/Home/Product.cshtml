@@ -2,7 +2,7 @@
 @{
     ViewBag.Title = "Lista produktów";
 }
-<h1 class="mb-3">Lista odbiorców</h1>
+<h1 class="mb-3">Lista produktów</h1>
 <button class="btn btn-primary mb-3" onclick='window.location.href="@Url.Action("EditProduct","Home")"'>Dodaj</button>
 
 @if (Model != null && Model.Any())
@@ -10,9 +10,8 @@
     <table class="table table-hover table-striped mt-3 mb-5">
         <thead>
             <tr>
-                <th scope="col">Odbiorca</th>
-                <th scope="col">Adres</th>
-                <th scope="col">Email</th>
+                <th scope="col">Produkt</th>
+                <th scope="col">Wartość</th>                
             </tr>
         </thead>
         <tbody>
@@ -44,7 +43,7 @@
 }
 else
 {
-    <div>Brak odbiorców do wyświetlania</div>
+    <div>Brak produktów do wyświetlania</div>
 }
 @section Scripts
     {
@@ -90,7 +89,6 @@ else
                 },
                 dataType: 'json',
                 cache: false
-
             });
         }
     </script>

@@ -253,8 +253,9 @@ namespace InvoiceManager.Controllers
             try
             {
                 var userId = User.Identity.GetUserId();
-                _clientRepository.Delete(id, userId);
-                _addressRepository.Delete(id);
+                var client = _clientRepository.GetClient(id, userId);
+                _clientRepository.Delete(id, userId);                
+                _addressRepository.Delete(client.AddressId);
             }
             catch (Exception e)
             {
@@ -272,6 +273,7 @@ namespace InvoiceManager.Controllers
             var products = _productRepository.GetProducts(userId);
             return View(products);
         }
+        [AllowAnonymous]
         public ActionResult EditProduct(int id = 0)
         {
             var userId = User.Identity.GetUserId();
@@ -293,7 +295,7 @@ namespace InvoiceManager.Controllers
             return new EditProductViewModel
             {
                 Product = product,
-                Heading = product.Id == 0 ? "Dodawanie nowego odbiorcy" : "Odbiorca",
+                Heading = product.Id == 0 ? "Dodawanie nowego produktu" : "Produkt",
             };
         }
         [HttpPost]
@@ -314,6 +316,20 @@ namespace InvoiceManager.Controllers
                 _productRepository.Update(product);
             }
             return RedirectToAction("Product");
+        }
+        [HttpPost]
+        public ActionResult DeleteProduct(int id)
+        {
+            try
+            {
+                var userId = User.Identity.GetUserId();
+                _productRepository.Delete(id, userId);                
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Message = e.Message });
+            }
+            return Json(new { Success = true });
         }
     }
 }
