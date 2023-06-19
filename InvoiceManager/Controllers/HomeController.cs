@@ -17,9 +17,10 @@ namespace InvoiceManager.Controllers
         private ProductRepository _productRepository = new ProductRepository();
         private AddressRepository _addressRepository = new AddressRepository();
         private UserRepository _userRepository = new UserRepository();
+        private MethodOfPaymentRepository _methodOfPaymentRepository = new MethodOfPaymentRepository();
 
         //INVOICE-------
-        
+
         public ActionResult Index()
         {
             var userId = User.Identity.GetUserId();
@@ -330,6 +331,41 @@ namespace InvoiceManager.Controllers
                 return Json(new { Success = false, Message = e.Message });
             }
             return Json(new { Success = true });
+        }
+
+        //METHOD_OF_PAYMENT---
+
+        [AllowAnonymous]
+        public ActionResult MethodOfPayment()
+        {
+            var userId = User.Identity.GetUserId();
+            var methodOfPayment = _methodOfPaymentRepository.GetMethodOfPayments(userId);
+            return View(methodOfPayment);
+        }
+        [AllowAnonymous]
+        public ActionResult EditMethodOfPayment(int id = 0)
+        {
+            var userId = User.Identity.GetUserId();
+
+            var methodOfPayment = id == 0 ? GetNewMethodOfPayment(userId) : _methodOfPaymentRepository.GetMethodOfPayment(id, userId);
+
+            var vm = PrepareEditMethodOfPaymentVm(methodOfPayment);
+            return View(vm);
+        }
+        private MethodOfPayment GetNewMethodOfPayment(string userId)
+        {
+            return new MethodOfPayment
+            {
+                UserId = userId,
+            };
+        }
+        private EditMethodOfPaymentViewModel PrepareEditMethodOfPaymentVm(MethodOfPayment methodOfPayment)
+        {
+            return new EditMethodOfPaymentViewModel
+            {
+                MethodOfPayment = methodOfPayment,
+                Heading = methodOfPayment.Id == 0 ? "Dodawanie nowej metody płatności" : "Metoda płatności",
+            };
         }
     }
 }

@@ -1,0 +1,73 @@
+﻿@model IEnumerable<InvoiceManager.Models.Domains.MethodOfPayment>
+@{
+    ViewBag.Title = "Lista produktów";
+}
+<h1 class="mb-3">Lista produktów</h1>
+<button class="btn btn-primary mb-3" onclick='window.location.href="@Url.Action("EditMethodOfPayment","Home")"'>Dodaj</button>
+
+@if (Model != null && Model.Any())
+{
+    <table class="table table-hover table-striped mt-3 mb-5">
+        <thead>
+            <tr>
+                <th scope="col">Nazwa</th>                
+            </tr>
+        </thead>
+        <tbody>
+            @foreach (var product in Model)
+            {
+                <tr>
+                    <td>
+                        <a class="font-weight-bold" style="font-weight: bold" href="@Url.Action("EditMethodOfPayment","Home", new {id= product.Id})">@product.Name</a>
+                    </td>
+
+                    <td>@product.Name</td>                    
+                    <td>
+                        <button class="btn btn-danger btn-sm"
+                                onclick="deleteMethodOfPayment('@product.Id', this)">
+                            Usuń
+                        </button>
+                    </td>
+                    <td></td>
+                </tr>
+            }
+        </tbody>
+    </table>
+}
+else
+{
+    <div>Brak produktów do wyświetlania</div>
+}
+@section Scripts
+    {
+    <script type="text/javascript">
+
+        function deleteMethodOfPayment(id, btn) {
+            if (!confirm("Czy na pewno chcesz usunąć metodę płatności?"))
+                return;
+
+            $.ajax({
+	            type: 'POST',
+	            url: "@Url.Action("DeleteMethodOfPayment", "Home")",
+	            data: {
+		            id: id
+	            },
+	            success: function (data) {
+                        if (data.Success) {
+                            var row = btn.parentNode.parentNode;
+                            row.parentNode.removeChild(row);
+		                }
+		                else {
+			                alert(data.Message);
+		                }
+	            },
+	            error: function (data) {
+			        alert(data.Message);
+	            },
+	            dataType: 'json'
+                });
+        }        
+    </script>
+}
+
+

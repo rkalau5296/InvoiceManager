@@ -40,6 +40,11 @@ namespace InvoiceManager.Models
                 .WithRequired(x => x.User)
                 .HasForeignKey(x => x.UserId)
                 .WillCascadeOnDelete(false);
+            modelBuilder.Entity<ApplicationUser>()
+                .HasMany(x => x.MethodOfPayments)
+                .WithRequired(x => x.User)
+                .HasForeignKey(x => x.UserId)
+                .WillCascadeOnDelete(false);
             base.OnModelCreating(modelBuilder);
         }
 

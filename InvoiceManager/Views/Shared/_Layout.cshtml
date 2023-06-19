@@ -20,17 +20,21 @@
             <div class="collapse navbar-collapse" id="navbarSupportedContent">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item">
-                        @Html.ActionLink("O mnie", "About", "Home", null, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
-                        @Html.ActionLink("Kontakt", "Contact", "Home", null, new { @class = "nav-link" })
-                    </li>
-                    <li class="nav-item">
                         @Html.ActionLink("Produkt", "Product", "Home", null, new { @class = "nav-link" })
                     </li>
                     <li class="nav-item">
                         @Html.ActionLink("Klient", "Client", "Home", null, new { @class = "nav-link" })
                     </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Metody płatności", "MethodOfPayment", "Home", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("O mnie", "About", "Home", null, new { @class = "nav-link" })
+                    </li>
+                    <li class="nav-item">
+                        @Html.ActionLink("Kontakt", "Contact", "Home", null, new { @class = "nav-link" })
+                    </li>
+
                 </ul>
                 @Html.Partial("_LoginPartial")
             </div>

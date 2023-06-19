@@ -16,6 +16,7 @@ namespace InvoiceManager.Models.Domains
             Invoices = new Collection<Invoice>();
             Clients = new Collection<Client>();
             Products = new Collection<Product>();
+            MethodOfPayments = new Collection<MethodOfPayment>();
         }
         [Required]
         public string Name { get; set; }
@@ -24,6 +25,8 @@ namespace InvoiceManager.Models.Domains
         public ICollection<Invoice> Invoices { get; set; }
         public ICollection<Client> Clients { get; set; }
         public ICollection<Product> Products { get; set; }
+        public ICollection<MethodOfPayment> MethodOfPayments { get; set; }
+
         public async Task<ClaimsIdentity> GenerateUserIdentityAsync(UserManager<ApplicationUser> manager)
         {
             // Note the authenticationType must match the one defined in CookieAuthenticationOptions.AuthenticationType
