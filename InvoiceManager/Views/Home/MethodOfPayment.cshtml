@@ -1,8 +1,8 @@
 ﻿@model IEnumerable<InvoiceManager.Models.Domains.MethodOfPayment>
 @{
-    ViewBag.Title = "Lista produktów";
+    ViewBag.Title = "Metody płatności";
 }
-<h1 class="mb-3">Lista produktów</h1>
+<h1 class="mb-3">Metody płatności</h1>
 <button class="btn btn-primary mb-3" onclick='window.location.href="@Url.Action("EditMethodOfPayment","Home")"'>Dodaj</button>
 
 @if (Model != null && Model.Any())
@@ -14,17 +14,17 @@
             </tr>
         </thead>
         <tbody>
-            @foreach (var product in Model)
+            @foreach (var methodOfPayment in Model)
             {
                 <tr>
                     <td>
-                        <a class="font-weight-bold" style="font-weight: bold" href="@Url.Action("EditMethodOfPayment","Home", new {id= product.Id})">@product.Name</a>
+                        <a class="font-weight-bold" style="font-weight: bold" href="@Url.Action("EditMethodOfPayment","Home", new {id= methodOfPayment.Id})">@methodOfPayment.Name</a>
                     </td>
 
-                    <td>@product.Name</td>                    
+                    <td>@methodOfPayment.Name</td>                    
                     <td>
                         <button class="btn btn-danger btn-sm"
-                                onclick="deleteMethodOfPayment('@product.Id', this)">
+                                onclick="deleteMethodOfPayment('@methodOfPayment.Id', this)">
                             Usuń
                         </button>
                     </td>
@@ -36,7 +36,7 @@
 }
 else
 {
-    <div>Brak produktów do wyświetlania</div>
+    <div>Brak metod płatności do wyświetlania</div>
 }
 @section Scripts
     {

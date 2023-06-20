@@ -7,7 +7,7 @@
 
 <div class="row">
     <div class="col-lg-6">
-        @using (Html.BeginForm("Product", "Home"))
+        @using (Html.BeginForm("MethodOfPayment", "Home"))
         {
 
             @Html.AntiForgeryToken()
@@ -15,13 +15,14 @@
 
             <p class="alert alert-info mt-4 mb-4">Pola Nazwa i wartość są <strong>wymagane</strong>.</p>
 
-            @Html.HiddenFor(x => x.MethodOfPayment.Id)            
+            @Html.HiddenFor(x => x.MethodOfPayment.Id)
+            @Html.HiddenFor(x => x.MethodOfPayment.UserId)
 
             <div class="form-group">
                 @Html.LabelFor(x => x.MethodOfPayment.Name)
                 @Html.TextBoxFor(x => x.MethodOfPayment.Name, new { @class = "form-control", autofocus = "autofocus" })
                 @Html.ValidationMessageFor(x => x.MethodOfPayment.Name)
-            </div>            
+            </div>
             <br />
 
             <button class="btn btn-primary btn-lg mb-5" type="submit">Zapisz</button>

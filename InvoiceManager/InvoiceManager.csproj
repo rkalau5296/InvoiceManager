@@ -197,6 +197,10 @@
     <Compile Include="Migrations\202306182121331_productCotroller.designer.cs">
       <DependentUpon>202306182121331_productCotroller.cs</DependentUpon>
     </Compile>
+    <Compile Include="Migrations\202306192156410_init2.cs" />
+    <Compile Include="Migrations\202306192156410_init2.designer.cs">
+      <DependentUpon>202306192156410_init2.cs</DependentUpon>
+    </Compile>
     <Compile Include="Migrations\Configuration.cs" />
     <Compile Include="Models\Domains\Address.cs" />
     <Compile Include="Models\Domains\Client.cs" />
@@ -472,6 +476,9 @@
     </EmbeddedResource>
     <EmbeddedResource Include="Migrations\202306182121331_productCotroller.resx">
       <DependentUpon>202306182121331_productCotroller.cs</DependentUpon>
+    </EmbeddedResource>
+    <EmbeddedResource Include="Migrations\202306192156410_init2.resx">
+      <DependentUpon>202306192156410_init2.cs</DependentUpon>
     </EmbeddedResource>
   </ItemGroup>
   <PropertyGroup>

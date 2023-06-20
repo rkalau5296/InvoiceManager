@@ -367,5 +367,38 @@ namespace InvoiceManager.Controllers
                 Heading = methodOfPayment.Id == 0 ? "Dodawanie nowej metody płatności" : "Metoda płatności",
             };
         }
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult MethodOfPayment(MethodOfPayment methodOfPayment)
+        {
+            if (!ModelState.IsValid)
+            {
+                var vm = PrepareEditMethodOfPaymentVm(methodOfPayment);
+                return View("MethodOfPayment", vm);
+            }
+            if (methodOfPayment.Id == 0)
+            {
+                _methodOfPaymentRepository.Add(methodOfPayment);
+            }
+            else
+            {
+                _methodOfPaymentRepository.Update(methodOfPayment);
+            }
+            return RedirectToAction("MethodOfPayment");
+        }
+        [HttpPost]
+        public ActionResult DeleteMethodOfPayment(int id)
+        {
+            try
+            {
+                var userId = User.Identity.GetUserId();
+                _methodOfPaymentRepository.Delete(id, userId);
+            }
+            catch (Exception e)
+            {
+                return Json(new { Success = false, Message = e.Message });
+            }
+            return Json(new { Success = true });
+        }
     }
 }

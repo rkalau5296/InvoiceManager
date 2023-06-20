@@ -37,7 +37,7 @@ namespace InvoiceManager.Models.Repositories
             {
                 var methodOfPaymentToUpdate = context.MethodOfPayments.Single(x => x.Id == methodOfPayment.Id && x.UserId == methodOfPayment.UserId);
 
-                methodOfPaymentToUpdate.Name = methodOfPaymentToUpdate.Name;                
+                methodOfPaymentToUpdate.Name = methodOfPayment.Name;                
                 context.SaveChanges();
             }
         }
